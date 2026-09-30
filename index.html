@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="StockRoom: a simple inventory management system for small stores and stockrooms.">
+<title>StockRoom | Inventory Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="#home">StockRoom</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav id="nav" class="nav" aria-label="Main">
+      <a href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#catalogue">Catalogue</a><a href="#add">Add stock</a><a href="#stock">Stock list</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section id="home" class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Know what is on the shelf before you run out.</h1>
+        <p class="lead">StockRoom records every item, counts every unit and flags what needs reordering, so a small store never sells what it does not have.</p>
+        <a class="btn" href="#add">Add stock</a>
+        <a class="btn ghost" href="#stock">View stock list</a>
+      </div>
+      <aside class="stats" aria-label="Stock summary">
+        <div><strong id="statItems">0</strong><span>item types</span></div>
+        <div><strong id="statUnits">0</strong><span>units in stock</span></div>
+        <div><strong id="statValue">0</strong><span>stock value (UGX)</span></div>
+        <div class="warn-stat"><strong id="statLow">0</strong><span>need reordering</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="wrap">
+      <h2>About StockRoom</h2>
+      <div class="two-col">
+        <p>Notebooks and spreadsheets go out of date the moment someone takes an item. StockRoom keeps one live list of what you hold, where it is stored and who supplies it.</p>
+        <p>Each item has a reorder level. When the quantity falls to that level the item is marked low, so you order before the shelf is empty.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section alt">
+    <div class="wrap">
+      <h2>What StockRoom does</h2>
+      <ul class="cards">
+        <li class="card"><h3>Record items</h3><p>Name, category, storage location, price and supplier in one place.</p></li>
+        <li class="card"><h3>Track quantities</h3><p>Add or remove units with one click as stock arrives or is used.</p></li>
+        <li class="card"><h3>Flag low stock</h3><p>Items at or below their reorder level are highlighted.</p></li>
+        <li class="card"><h3>Value your stock</h3><p>See the total value of everything you hold, in UGX.</p></li>
+        <li class="card"><h3>Search and filter</h3><p>Find an item by name or show only low or empty stock.</p></li>
+        <li class="card"><h3>Supplier catalogue</h3><p>Browse sample products from a public catalogue and start a stock entry.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="catalogue" class="section">
+    <div class="wrap">
+      <h2>Supplier catalogue</h2>
+      <p class="hint">Sample products from DummyJSON. Choose one to start a stock entry.</p>
+      <div id="catalogue-body" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="add" class="section alt">
+    <div class="wrap narrow">
+      <h2>Add stock</h2>
+      <p class="hint">All fields are required except notes.</p>
+      <form id="itemForm" novalidate>
+        <div class="field">
+          <label for="itemName">Item name</label>
+          <input id="itemName" name="itemName" type="text" maxlength="60">
+          <p class="error" id="itemName-error" role="alert"></p>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+              <option value="">Choose a category</option>
+              <option>Groceries</option><option>Electronics</option><option>Stationery</option>
+              <option>Cleaning supplies</option><option>Furniture</option><option>Other</option>
+            </select>
+            <p class="error" id="category-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="location">Storage location</label>
+            <select id="location" name="location">
+              <option value="">Choose a location</option>
+              <option>Main store</option><option>Shelf A</option><option>Shelf B</option>
+              <option>Cold room</option><option>Back office</option>
+            </select>
+            <p class="error" id="location-error" role="alert"></p>
+          </div>
+        </div>
+        <div class="row3">
+          <div class="field">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" name="quantity" type="number" min="0" step="1" inputmode="numeric">
+            <p class="error" id="quantity-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="unitPrice">Unit price (UGX)</label>
+            <input id="unitPrice" name="unitPrice" type="number" min="0" step="any" inputmode="decimal">
+            <p class="error" id="unitPrice-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="reorderLevel">Reorder level</label>
+            <input id="reorderLevel" name="reorderLevel" type="number" min="0" step="1" inputmode="numeric">
+            <p class="error" id="reorderLevel-error" role="alert"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="supplierEmail">Supplier email</label>
+            <input id="supplierEmail" name="supplierEmail" type="email" autocomplete="off" placeholder="orders@supplier.co.ug">
+            <p class="error" id="supplierEmail-error" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="supplierPhone">Supplier phone</label>
+            <input id="supplierPhone" name="supplierPhone" type="tel" autocomplete="off" placeholder="0772 123 456">
+            <p class="error" id="supplierPhone-error" role="alert"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" rows="3" maxlength="200"></textarea>
+          <p class="counter"><span id="notesCount">0</span>/200 characters</p>
+          <p class="error" id="notes-error" role="alert"></p>
+        </div>
+        <button class="btn" type="submit">Save item</button>
+        <p class="success" id="formStatus" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <section id="stock" class="section">
+    <div class="wrap">
+      <h2>Stock list <span class="badge" id="itemTotal">0</span></h2>
+      <div class="tools">
+        <label class="sr" for="search">Search items</label>
+        <input id="search" type="search" placeholder="Search by item name">
+        <div class="filters" id="filters" role="group" aria-label="Filter by status">
+          <button class="chip active" data-filter="All">All</button>
+          <button class="chip" data-filter="Low">Low stock</button>
+          <button class="chip" data-filter="Out">Out of stock</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Item</th><th>Location</th><th>Level</th><th>Value (UGX)</th><th>Adjust</th><th></th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot">
+    <p>StockRoom &middot; Inventory management system</p>
+    <p>BSE 4103 Advanced Internet Programming coursework</p>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
